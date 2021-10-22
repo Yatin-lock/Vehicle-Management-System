@@ -18,7 +18,7 @@ class Table{
     const T* const addNewRecord(T data) throw (MemoryError, IOError);
     void updateRecord(T updatedRecord) throw (IOError, NoSuchRecordError);
 public:
-    Table(string filename) throw MemoryError;
+    Table(string filename) throw    ;
     ~Table();
     long getNextRecordId() const;
     const T *const  getRecordForId(long recordId) const throw NoSuchRecordError;
