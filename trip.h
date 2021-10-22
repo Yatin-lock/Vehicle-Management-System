@@ -5,13 +5,13 @@
 #include "vehicle.h"
 #include "storable.cpp"
 #include <bits/stdc++.h>
-using namepsace std ;
+using namespace std;
 
 class Trip : public Storable 
 {
     private:
-    const Vehicle*vehicle ;
-    const User * user ;
+    const Vehicle *vehicle ;
+    const User *user ;
     Date startDate;
     Date endDate ;
     
@@ -27,13 +27,14 @@ class Trip : public Storable
     Date getStartDate () const ;
     Date getEndDate () const ;
     long getStartReading () const ;
+    long getEndReading() const;
     long getFare () const ;
     bool iscompleted () const ;
-
     void startTrip (long startReading) ;
     double completeTrip (long endReading);
     void display () const ;
     string toString() const ;
+    bool isCompleted() const;
     void setDataFrom (Storable *s);
 };
 

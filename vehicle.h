@@ -1,12 +1,8 @@
 #ifndef vehicle_h
 #define vehicle_h
 
-//#include "date.h"
+#include "date.h"
 #include "storable.cpp"
-
-class Date{
-
-};
 
 #include<string>
 

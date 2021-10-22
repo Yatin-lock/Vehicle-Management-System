@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 #include "trip.h"
-#include "string_helper.h"
+#include "string_helper.cpp"
 
 const char DELIMITER = ';';
 
-Trip ::Trip(const Vehile *vehicle, const User *user, Daye startDate, Date endDate, long recordId, long startReading, long endReading, double fare, bool isCompleted) : Storable(recordId)
+Trip ::Trip(const Vehicle*vehicle, const User * user, Date startDate, Date endDate, long recordId=0, long startReading = 0, long endReading =0 , double fare = 0.0 , bool isCompleted = false ) : Storable(recordId)
 {
     this->vehicle = vehicle;
     this->user = user;
@@ -22,8 +22,8 @@ Date Trip ::getStartDate() const { return this->startDate; }
 Date Trip ::getEndDate() const { return this->endDate; }
 long Trip ::getStartReading() const { return this->startReading; }
 long Trip ::getEndReading() const { return this->endReading; }
-long Trip ::getFare() const { return this->fare }
-bool Trip ::isCompleted() const { return this->completed }
+long Trip ::getFare() const { return this->fare; }
+bool Trip ::isCompleted() const { return this->completed; }
 
 void Trip ::startTrip(long startReading)
 {
@@ -34,7 +34,7 @@ double Trip ::completeTrip(long endReading)
 {
     if (this->completed)
     {
-        return->fare;
+        return this->fare;
     }
 
     this->endReading = endReading;
@@ -82,8 +82,8 @@ string Trip ::toString() const
 {
     stringstream ss;
     ss << recordId << DELIMITER
-       << vehicle->getRecordId() << DELIMITER
-       << user->getRecordId() << DELIMITER
+       << vehicle->getRecord() << DELIMITER
+       << user->getRecord() << DELIMITER
        << startDate.toString() << DELIMITER
        << endDate.toString() << DELIMITER
        << startReading << DELIMITER
@@ -103,7 +103,7 @@ void Trip ::setDataFrom(Storable *s)
         this->startDate = t->startDate;
         this->endDate = t->endDate;
         this->startReading = t->startReading;
-        this->endReading = t->endignReading;
+        this->endReading = t->endReading;
         this->fare = t->fare;
         this->completed = t->completed;
     }
