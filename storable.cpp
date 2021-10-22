@@ -1,17 +1,14 @@
 #ifndef storable_cpp
 #define storable_cpp
 
-// #include "serializable.cpp"
-class Serializable{
-    
-};
+#include "serialize.cpp"
 
 #include<string>
 #include<iostream>
 
 using namespace std;
 
-class Storable: public Serializable{
+class Storable: public Serialize{
 protected:
     long recordId;
 public:

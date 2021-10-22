@@ -44,4 +44,5 @@ public:
     void setDataFrom(Storable *s);
 };
 
+
 #endif

@@ -11,7 +11,7 @@ Vehicle::Vehicle(
             double pricePerKm,
             Date PUCExpirationDate,
             long recordId=0
-        ){
+        ): Storable(recordId){
     this->registrationNumber = registrationNumber;
     this->type = type;
     this->seats = seats;
@@ -19,4 +19,74 @@ Vehicle::Vehicle(
     this->pricePerKm = pricePerKm;
     this->PUCExpirationDate = PUCExpirationDate;
     }
-    string Vehicle::getRegistrationNumber() const;
+    string Vehicle::getRegistrationNumber() const{
+        return this->registrationNumber;
+    }
+    VehicleType Vehicle::getVehicleType() const{
+        return this->type;
+    }
+    int Vehicle::getSeats() const{
+        return this->seats;
+    }
+    string Vehicle::getCompanyName() const{
+        return this->companyName;
+    }
+    double Vehicle::getPricePerKm() const{
+        return this->pricePerKm;
+    }
+    Date Vehicle::getPUCExpirationDate() const{
+        return this->PUCExpirationDate;
+    }
+    void Vehicle::setPricePerKm(double newPrice){
+        this->pricePerKm = newPrice;
+    }
+    string Vehicle::getVehicleTypeName() const{
+        switch (this->type)
+        {
+        case VehicleType::bike:
+            return "bike" ;
+            break;
+        case VehicleType::car:
+            return "Car";
+            break;
+        case VehicleType::towera: 
+            return "Towera";
+            break;
+        default:
+            return "";
+            break;
+        }
+    }
+    void Vehicle::display() const{
+        cout<<"Vehicle Details:\n";
+        cout<<"Registration number: "<<this->registrationNumber<<endl;
+        cout<<"Vehicle type: "<<this->getVehicleTypeName()<<endl;
+        cout<<"Number of seats: "<<this->seats<<endl;
+        cout<<"Company name: "<<this->companyName<<endl;
+        cout<<"Price per km: "<<this->pricePerKm<<endl;
+        // cout<<"PUC Expiration date: "<<this->PUCExpirationDate.toString()<<endl;
+    }
+
+    string Vehicle::toString() const{
+        stringstream ss;
+        ss<<recordId<<DELIMITER
+          <<registrationNumber<<DELIMITER
+          <<type<<DELIMITER
+          <<seats<<DELIMITER
+          <<companyName<<DELIMITER
+          <<to_string(pricePerKm)<<DELIMITER;
+        //   <<PUCExpirationDate.toString();
+          return ss.str();
+    }
+
+    void Vehicle::setDataFrom(Storable *s){
+        Vehicle *v = dynamic_cast<Vehicle*>(s);
+        if(v){
+            this->registrationNumber = v->registrationNumber;
+            this->type = v->type;
+            this->seats = v->seats;
+            this->companyName = v->companyName;
+            this->pricePerKm = v->pricePerKm;
+            this->PUCExpirationDate = v->PUCExpirationDate;
+        }
+    }
