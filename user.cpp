@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
-//#include "user.h"
-//#include "string_helper.h"
+#include "user.h"
+#include "string_helper.cpp"
 const char DELIMITER = ';';
-User ::User(string name, string contact, string email, long recordId) : Storable(recordId)
+User::User(string name, string contact, string email, long recordId) : Storable(recordId)
 {
     this->name = name;
     this->contact = contact;
@@ -25,12 +25,11 @@ void User ::display() const
 
 string User ::toString() const
 {
-    string stream ss;
-    ss << recordId << DELIMITER;
-    << name << DELIMITER;
-    << contact << DELIMETER;
+    stringstream ss;
+    ss << recordId << DELIMITER
+    << name << DELIMITER
+    << contact << DELIMITER
     << email;
-
     return ss.str();
 }
 
