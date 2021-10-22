@@ -7,7 +7,7 @@ vector <string> split (const string &s, char delimiter)
     string token ;
     istringstream tokenStream (s) ;
 
-    while (getline (tokenStream , token , delimeter) )
+    while (getline (tokenStream , token , delimiter) )
     {
         tokens.push_back (token);
     }
