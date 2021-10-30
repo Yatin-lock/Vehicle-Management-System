@@ -14,7 +14,6 @@ class Trip : public Storable
     const User *user ;
     Date startDate;
     Date endDate ;
-    
     long startReading ;
     long endReading ;
     double fare ;

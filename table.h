@@ -9,7 +9,7 @@ using namespace std;
 template<typename T>
 class Table{
 
-    string filename;
+    string fileName;
     fstream fileStream;
     vector<Storable*> records = nullptr;
 
@@ -21,7 +21,7 @@ public:
     Table(string filename) throw    ;
     ~Table();
     long getNextRecordId() const;
-    const T *const  getRecordForId(long recordId) const throw NoSuchRecordError;
+    const T *const  getRecordForId(long recordId) const throw (NoSuchRecordError);
     friend class Database;
 };
 

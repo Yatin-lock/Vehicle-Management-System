@@ -2,7 +2,7 @@
 #define database_cpp
 
 #include "database.h"
-#include "string_helper.h"
+#include "string_helper.cpp"
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -20,7 +20,7 @@ Database ::Database() throw(IOError, MemoryError)
         this->fetchAllUsers();
         this->fetchAllTrips();
     }
-    catch ()
+    catch (...)
     {
         throw;
     }
@@ -30,7 +30,7 @@ void Database ::fetchAllVehicles() throw(IOError, MemoryError)
 {
     this->vehicleTable->fileStream.open(this->vehicleTable->fileName);
 
-    if (!this->vehicleTAble->fileStream)
+    if (!this->vehicleTable->fileStream)
     {
         throw IOError();
     }
@@ -42,16 +42,17 @@ void Database ::fetchAllVehicles() throw(IOError, MemoryError)
         auto recordId = stol(components[0]);
         auto registrationNumber = components[1];
         auto type = VehicleType(stoi(components[2]));
-        auto seats = stoi(component[3]);
+        auto seats = stoi(components[3]);
         auto companyName = components[4];
         auto pricePerKm = stod(components[6]);
+        auto PUCExpirationDate = Date(components[6]);
 
         Storable *record = new Vehicle(registrationNumber, type, seats, companyName, pricePerKm, PUCExpirationDate, recordId);
         if (!record)
         {
             throw MemoryError();
         }
-        this->vehicleTable->records->push_back(record);
+        this->vehicleTable->records.push_back(record);
     }
 
     this->vehicleTable->fileStream.close();
@@ -79,16 +80,16 @@ void Database ::fetchAllUsers() throw(IOError, MemoryError)
         {
             throw MemoryError();
         }
-        this->userTable->records->push_back(record);
+        this->userTable->records.push_back(record);
     }
 
     this->userTable->fileStream.close();
 }
 
-void Database ::fetchALLTrips() throw(IOErrors, MemoryError)
+void Database ::fetchAllTrips() throw(IOError, MemoryError)
 {
     this->tripTable->fileStream.open(this->tripTable->fileName);
-    if (!this->tripTable->filestream)
+    if (!this->tripTable->fileStream)
     {
         throw IOError();
     }
@@ -109,14 +110,14 @@ void Database ::fetchALLTrips() throw(IOErrors, MemoryError)
             auto fare = stod(components[7]);
             auto isCompleted = components[8] == "0" ? false : true;
 
-            Storable *record = new Trip(vehiclePtr, userPtr, startDate, endDate, recordId, startReading, endReading, fare, isCompleted);
+            Storable *record = new Trip(vehiclePtr, userPtr, startDate, endDate, recordID, startReading, endReading, fare, isCompleted);
             if (!record)
             {
                 throw MemoryError();
             }
-            this->tripTable->record->push_back(record);
+            this->tripTable->records.push_back(record);
         }
-        catch ()
+        catch (...)
         {
         }
     }
@@ -124,17 +125,17 @@ void Database ::fetchALLTrips() throw(IOErrors, MemoryError)
     this->tripTable->fileStream.close();
 }
 
-const Vehcile *const Database ::getVehicle(string RegistrationNo)
+const Vehicle *const Database ::getVehicle(string RegistrationNo)
     const throw(NoSuchRecordError)
 {
-    for (auto &record : *this->vehicleTable = > records)
+    for (auto record : this->vehicleTable->records)
     {
         Vehicle *vehicle = dynamic_cast<Vehicle *>(record);
         if (vehicle)
         {
-            if (vehicle->getRegistrationNumber() == registrationNo)
+            if (vehicle->getRegistrationNumber() == RegistrationNo)
             {
-                return Vehicle;
+                return vehicle;
             }
         }
     }
@@ -143,7 +144,7 @@ const Vehcile *const Database ::getVehicle(string RegistrationNo)
 
 const User *const Database ::getUser(string contactNo) const throw(NoSuchRecordError)
 {
-    for (auto &record : *this->userTable->records)
+    for (auto record : this->userTable->records)
     {
         User *user = dynamic_cast<User *>(record);
         if (user)
@@ -161,16 +162,16 @@ const vector<const Vehicle *> Database ::getVehicle(Date startDate, Date endDate
 {
     vector<const Vehicle *> vehicles = vector<const Vehicle *>();
 
-    for (auto &vrecord : *this->vehicleTable->records)
+    for (auto vrecord : this->vehicleTable->records)
     {
         Vehicle *vehicle = dynamic_cast<Vehicle *>(vrecord);
         if (vehicle && vehicle->getVehicleType() == type)
         {
             bool tripFound = false;
-            for (auto &trecord : *this->tripTable->records)
+            for (auto trecord : (this->tripTable->records))
             {
                 Trip *trip = dynamic_cast<Trip *>(trecord);
-                if (trip && !trip->iscompleted() && trip->getVehicle().getRecordId() == vehicle->getRecordId() && !(trip->getStartDate() >= endDate && trip->getEndDate() >= endDate) && !(trip->getStartDate() <= startDate && trip->getEndDate() <= startDate))
+                if (trip && !trip->iscompleted() && trip->getVehicle().getRecord() == vehicle->getRecord() && !(trip->getStartDate() >= endDate && trip->getEndDate() >= endDate) && !(trip->getStartDate() <= startDate && trip->getEndDate() <= startDate))
                 {
                     tripFound = true;
                     break;

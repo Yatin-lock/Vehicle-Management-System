@@ -33,8 +33,8 @@ void Database ::addNewRecord(T *record) throw(IOError, MemoryError)
     }
 }
 
-template <cass T>
-void Database ::updateRecord(t *record) throw(IOError, NoSuchRecordError)
+template <class T>
+void Database ::updateRecord(T *record) throw(IOError, NoSuchRecordError)
 {
     try
     {

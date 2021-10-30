@@ -33,8 +33,64 @@ const T* const Table<T>::addNewRecord(T record) throw (MemoryError, IOError){
 }
 
 template<typename T>
-void Table<T>::updateRecord(T updatedRecord) throw (IOError,NoSuchRecordError){
+void Table<T> :: updateRecord(T updatedRecord) throw (IOError,NoSuchRecordError){
     for(auto &record: *this->records){
-        if(record->getRecord()==updateRecord.getRecord())
+        if(record->getRecord()==updateRecord.getRecord()){
+            T *pointerToRecord = dynamic_cast<T*>(record);
+            if(pointerToRecord){
+                T oldRecord = T(*pointerToRecord);
+                record->setDataFrom(&updatedRecord);
+                try{
+                    this->writeToFile();
+                    return;
+                }
+                catch(IOError error){
+                    record->setDataFrom(&oldRecord);
+
+                    throw;
+                }
+            }
+        }
     }
+    throw NoSuchRecordError();
+}
+
+template<typename T>
+void Table<T>:: writeToFile() throw(IOError){
+    this->fileStream.open(fileName,ios::out|ios::trunc);
+    if(!this->fileStream){
+        throw IOError();
+    }
+    for(auto &record: *records){
+        fileStream<<record->toString()<<endl;
+    }
+    this->fileStream.close();
+}
+template<typename T>
+const T* const Table<T>::getRecordForId(long recordID) const throw(NoSuchRecordError){
+    try{
+        return this->getReferenceOfRecordForId(recordID);
+    }
+    catch(NoSuchRecordError err){
+        throw;
+    }
+}
+
+template<typename T>
+T* Table<T>::getReferenceOfRecordForId(long recordId) const throw (NoSuchRecordError){
+    for(auto &record: *records){
+        if(record->getRecord() == recordId){
+            return dynamic_cast<T*>(record);
+        }
+    }
+    throw NoSuchRecordError();
+}
+
+template<typename T>
+Table<T> :: ~Table(){
+    for(auto &record: *this->records){
+        delete dynamic_cast<T*>(record);
+    }
+    this->records->clear();
+    delete this->records;
 }
