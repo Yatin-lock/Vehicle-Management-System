@@ -143,4 +143,89 @@ void Application::renderViewVehicleMenu() const{
     }
 }
 
-void 
+void Application::renderEditVehicleMenu() const{
+    string regNo,price;
+    system("cls");
+    gotoXY(0,1);
+    cout<<"Enter registration number of vehicle you want to edit:";
+    getline(cin,regNo);
+    try{
+        auto vehicle = this->db->getVehicle(regNo);
+        Vehicle *newVehicle = new Vehicle(*vehicle);
+        vehicle->display();
+        cout<<"Enter new price per KM";
+        getline(cin,price);
+        if(price!=""){
+            newVehicle->setPricePerKm(stod(price));    
+            this->db->updateRecord(newVehicle);
+
+            this->showDialog("Vehicle updated Successfully"); 
+        }
+        delete newVehicle;
+    }
+    catch(Error e){
+        this->showDialog(e.getMessage());
+    }
+}
+
+void Application::renderAddNewUserMenu() const{
+    string name,contact,email;
+    system("cls");
+    gotoXY(0,1);
+    cout<<"Enter details of User: ";
+    gotoXY(0,2);
+    cout<<"Enter Name of User: ";
+    getline(cin,name);
+    cout<<"Enter Contact number of the user: ";
+    getline(cin,contact);
+    cout<<"Enter Email of the user: ";
+    getline(cin,email);
+    try{
+        User *user = new User(name,contact,email);
+        this->db->addNewRecord(user);
+        stringstream ss;
+        ss<<"User id: "<<user->getRecord();
+        showDialog("User Added succesfully: ",ss.str());
+        delete user;
+    }
+    catch(Error e){
+        showDialog(e.getMessage());
+    }   
+}
+
+void Application::renderAddNewTripMenu() const{
+    system("cls");
+    gotoXY(0,1);
+    string contact,startDate,endDate;
+    int vehicleType;
+    cout<<"Enter details of Trip: ";
+    cout<<"Enter contact number of user: ";
+    getline(cin,contact);
+    cout<<"When should your trip start?(d/m/yyyy): ";
+    getline(cin,startDate);
+    cout<<"When should your trip end?(d/m/yyyy): ";
+    getline(cin,endDate);
+    cout
+        <<"Enter Vehicle Type:\n"
+        <<"1.Bike 2.Car 3.Towera\n";
+    cin>>vehicleType;
+        auto availableVehicles = 
+            this->db->getVehicle(Date(startDate),
+                                 Date(endDate),
+                                 VehicleType(vehicleType));
+
+        if(availableVehicles.size()==0){
+            this->showDialog("No vehicles are free in given Date Range");
+            return;
+        }
+        gotoXY(0,12);
+        cout<<"Registration no. |"<<"Seats |"<<"Price per KM |"<<endl;
+        for(auto vehicle: availableVehicles){
+            s
+        }
+
+
+
+
+    
+}
