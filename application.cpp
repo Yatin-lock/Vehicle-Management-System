@@ -194,13 +194,24 @@ void Application::renderAddNewUserMenu() const{
 }
 
 void Application::renderAddNewTripMenu() const{
+    const User *user;
     system("cls");
     gotoXY(0,1);
     string contact,startDate,endDate;
     int vehicleType;
     cout<<"Enter details of Trip: ";
+    gotoXY(0,2);
     cout<<"Enter contact number of user: ";
     getline(cin,contact);
+    try{
+        user = this->db->getUser(contact);
+        gotoXY(0,3);
+        cout<<"User Found: "<<user->getName()<<endl;
+    }
+    catch(Error e){
+        showDialog(e.getMessage());
+        return;
+    }
     cout<<"When should your trip start?(d/m/yyyy): ";
     getline(cin,startDate);
     cout<<"When should your trip end?(d/m/yyyy): ";
@@ -221,11 +232,81 @@ void Application::renderAddNewTripMenu() const{
         gotoXY(0,12);
         cout<<"Registration no. |"<<"Seats |"<<"Price per KM |"<<endl;
         for(auto vehicle: availableVehicles){
-            s
+            cout<<vehicle->getRegistrationNumber()
+                <<vehicle->getSeats()
+                <<vehicle->getPricePerKm()<<"Rs. per KM\n";
         }
-
-
-
-
-    
+        string regNo;
+        const Vehicle *vehicle;
+        cout<<"Enter Registration no of desired Vehicle\n";
+        getline(cin,regNo);
+        try{
+            vehicle = this->db->getVehicle(regNo); 
+        }
+        catch(Error e){
+            showDialog(e.getMessage());
+            return;
+        }
+        long userId = user->getRecord();
+        long vehicleID = vehicle->getRecord();
+        Trip *trip;
+        try{
+            trip = 
+            new Trip(this->db->getVehicleRef()->getRecordForId(vehicleID)
+                    ,this->db->getUserRef()->getRecordForId(userId)
+                    ,Date(startDate),Date(endDate));
+            this->db->addNewRecord(trip);
+            stringstream ss;    
+            ss<<"Trip id: "<<trip->getRecord();
+            showDialog("Trip added succesfully",ss.str());
+        }
+        catch(Error e){
+            showDialog(e.getMessage());
+            return;
+        }    
+    delete trip;
 }
+
+void Application::renderViewTripMenu() const{
+    long tripId;
+    system("cls");
+    cout<<"Enter Trip id: ";
+    cin>>tripId;
+    gotoXY(0,3);
+    try{
+        auto trip = this->db->getTripRef()->getRecordForId(tripId);
+        trip->display();
+        cout<<endl;
+    }
+    catch(Error e){
+        this->showDialog(e.getMessage());
+    }
+}
+
+void Application::renderStartTripMenu() const{
+    //tbd
+}
+
+
+
+void Application::showDialog(string message, string id="") const{
+    //tbd
+}
+
+void Application::welcome(){
+    system("cls");
+    gotoXY(25,5);
+    cout<<"Welcome to Vehicle Rental System\n";
+    this->renderMenu();
+}
+
+void Application::start(){
+    welcome();
+}
+
+void Application::cleanMemory(){
+    delete db;
+}
+
+
+

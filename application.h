@@ -30,6 +30,7 @@ class Application{
     void cleanMemory();
 public:
     Application();
+    void start();
 };
 
 #endif
