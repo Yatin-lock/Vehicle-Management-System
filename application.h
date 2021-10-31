@@ -28,6 +28,7 @@ class Application{
     void renderCompleteTripMenu() const;
     void showDialog(string message, string id="") const;
     void cleanMemory();
+    
 public:
     Application();
     void start();

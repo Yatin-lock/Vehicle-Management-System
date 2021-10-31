@@ -284,14 +284,61 @@ void Application::renderViewTripMenu() const{
 }
 
 void Application::renderStartTripMenu() const{
-    //tbd
+    long tripId;
+    long initialReading;
+    system("cls");
+    cout<<"Enter Trip id: ";
+    cin>>tripId;
+    cout<<"Enter Odometer(distance) reading: ";
+    cin>>initialReading;
+
+    Trip *newTrip;
+    try{
+        auto trip = this->db->getTripRef()->getRecordForId(tripId);
+        newTrip = new Trip(*trip);
+        newTrip->startTrip(initialReading);
+        this->db->updateRecord(newTrip);
+        showDialog("Trip started successfully");
+    }
+    catch(Error e){
+        this->showDialog(e.getMessage());
+    }
+}
+
+void Application::renderCompleteTripMenu() const{
+    long tripId;
+    long finalReading;
+    system("cls");
+    cout<<"Enter Trip id: ";
+    cin>>tripId;
+    cout<<"Enter Odometer(distance) reading: ";
+    cin>>finalReading;
+
+    Trip *newTrip;
+    try{
+        auto trip = this->db->getTripRef()->getRecordForId(tripId);
+        newTrip = new Trip(*trip);
+        auto fare = newTrip->completeTrip(finalReading);
+        this->db->updateRecord(newTrip);
+        stringstream ss;
+        ss<<"Total Fare: "<<fare;
+        showDialog("Trip completed successfully");
+    }
+    catch(Error e){
+        this->showDialog(e.getMessage());
+    }
 }
 
 
-
-void Application::showDialog(string message, string id="") const{
-    //tbd
+void Application::showDialog(string message, string id="") const {
+    cout<<"\n\n";
+    cout<<message<<"\n";
+    if(id!=""){
+        cout<<id<<"\n";
+    }
+    for(int i=0;i<1e9+1e5;i++);
 }
+
 
 void Application::welcome(){
     system("cls");
